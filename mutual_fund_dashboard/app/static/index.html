@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mutual Fund Transaction Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">TRANSACTION ANALYTICS</div>
+      <h1>Mutual Fund Purchase Dashboard</h1>
+      <p>Purchase-side activity by investor, fund, amount, units and effective NAV.</p>
+    </div>
+    <a class="api-link" href="/docs" target="_blank">API Docs ↗</a>
+  </header>
+
+  <main>
+    <section class="filter-panel">
+      <div class="field">
+        <label for="fromDate">From date</label>
+        <input type="date" id="fromDate" />
+      </div>
+      <div class="field">
+        <label for="toDate">To date</label>
+        <input type="date" id="toDate" />
+      </div>
+      <button id="applyFilters" class="primary">Apply date range</button>
+      <div class="rule-note">Successful <strong>Switch In</strong> and <strong>Additional Purchase Systematic</strong> transactions only.</div>
+    </section>
+
+    <section class="kpis" id="kpis">
+      <article class="kpi"><span>Total invested</span><strong id="kpiAmount">—</strong><small>INR purchase amount</small></article>
+      <article class="kpi"><span>Units purchased</span><strong id="kpiUnits">—</strong><small>Total NAV units</small></article>
+      <article class="kpi"><span>Investors</span><strong id="kpiInvestors">—</strong><small>Unique PANs</small></article>
+      <article class="kpi"><span>Mutual funds</span><strong id="kpiFunds">—</strong><small>Unique schemes</small></article>
+      <article class="kpi"><span>Transactions</span><strong id="kpiTransactions">—</strong><small>Purchase records</small></article>
+    </section>
+
+    <nav class="tabs" aria-label="Dashboard sections">
+      <button class="tab active" data-tab="investor-funds">Investor → Funds</button>
+      <button class="tab" data-tab="fund-investors">Fund → Investors</button>
+      <button class="tab" data-tab="investors">Investor List</button>
+      <button class="tab" data-tab="funds">Mutual Fund Summary</button>
+    </nav>
+
+    <section class="tab-panel active" id="investor-funds">
+      <div class="section-head">
+        <div><h2>Investor-wise Purchase Summary</h2><p>Choose an investor to see purchases split by mutual fund.</p></div>
+        <div class="inline-controls"><select id="investorSelect"><option value="">All investors</option></select><button class="secondary" data-export="investorFundTable">Export CSV</button></div>
+      </div>
+      <div class="table-wrap"><table id="investorFundTable"><thead><tr><th>PAN</th><th>Investor</th><th>Fund</th><th>Code</th><th class="num">Amount</th><th class="num">Units</th><th class="num">Transactions</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section class="tab-panel" id="fund-investors">
+      <div class="section-head">
+        <div><h2>Mutual Fund-wise Summary per Investor</h2><p>Choose a fund to inspect its investor-level purchase activity.</p></div>
+        <div class="inline-controls"><select id="fundSelect"><option value="">All mutual funds</option></select><button class="secondary" data-export="fundInvestorTable">Export CSV</button></div>
+      </div>
+      <div class="table-wrap"><table id="fundInvestorTable"><thead><tr><th>Fund</th><th>Code</th><th>PAN</th><th>Investor</th><th class="num">Amount</th><th class="num">Units</th><th class="num">Transactions</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section class="tab-panel" id="investors">
+      <div class="section-head">
+        <div><h2>Investor List with Purchase Details</h2><p>Totals within the selected date range, grouped by PAN.</p></div>
+        <div class="inline-controls"><input id="investorSearch" type="search" placeholder="Search name or PAN" /><button class="secondary" data-export="investorTable">Export CSV</button></div>
+      </div>
+      <div class="table-wrap"><table id="investorTable"><thead><tr><th>PAN</th><th>Investor</th><th class="num">Total invested</th><th class="num">Units</th><th class="num">Funds</th><th class="num">Transactions</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <section class="tab-panel" id="funds">
+      <div class="section-head">
+        <div><h2>Mutual Fund Summary</h2><p>Purchase totals and weighted/effective NAV by fund.</p></div>
+        <div class="inline-controls"><input id="fundSearch" type="search" placeholder="Search scheme or code" /><button class="secondary" data-export="fundTable">Export CSV</button></div>
+      </div>
+      <div class="table-wrap"><table id="fundTable"><thead><tr><th>AMC</th><th>Fund code</th><th>Fund</th><th class="num">Total invested</th><th class="num">Units</th><th class="num">Avg NAV</th><th class="num">Investors</th><th class="num">Transactions</th></tr></thead><tbody></tbody></table></div>
+    </section>
+
+    <div id="errorBox" class="error hidden"></div>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
